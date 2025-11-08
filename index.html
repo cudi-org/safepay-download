@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      CUDI SafePay - Frictionless and Censorship-Resistant Micropayments
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #00bf8c;
+        --secondary-color: #3f6eff;
+        --tertiary-color: #a06eff;
+        --dark-color: #1a1a1a;
+        --hero-bg-color: #1e2a38;
+        --light-color: #f4f4f4;
+        --text-color: #333;
+        --white-color: #fff;
+        --alt-bg-color: #1e2a38;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--light-color);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background-color: var(--dark-color);
+        color: var(--white-color);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        color: var(--white-color);
+        text-decoration: none;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .hero {
+        position: relative;
+        background-color: var(--hero-bg-color);
+        color: var(--white-color);
+        padding: 100px 0;
+        text-align: center;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero-content::before {
+        content: "☁️";
+        color: var(--primary-color);
+        font-size: 15rem;
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.2;
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        font-weight: 300;
+      }
+
+      .hero .tagline {
+        font-size: 1.1rem;
+        font-style: italic;
+        font-weight: 400;
+        margin-top: 40px;
+        opacity: 0.9;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #00a377;
+      }
+
+      section {
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        color: var(--dark-color);
+        position: relative;
+        display: inline-block;
+      }
+
+      section h2::after {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background-color: var(--primary-color);
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+      }
+
+      .problem-points,
+      .solution-points,
+      .features-list,
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .point-card {
+        background-color: var(--white-color);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        width: calc(33% - 30px);
+        min-width: 280px;
+        text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .point-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .point-card h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .point-card p {
+        font-size: 1rem;
+        color: var(--text-color);
+      }
+
+      .section-description {
+        max-width: 800px;
+        margin: 0 auto 50px auto;
+        font-size: 1.1rem;
+        color: var(--text-color);
+      }
+
+      #problem,
+      #features {
+        background-color: var(--alt-bg-color);
+        color: var(--white-color);
+      }
+      #problem h2,
+      #features h2 {
+        color: var(--white-color) !important;
+      }
+      #problem .section-description,
+      #features .section-description {
+        color: var(--white-color);
+      }
+
+      #problem .point-card,
+      #features .point-card {
+        background-color: var(--white-color);
+      }
+      #problem .point-card h3,
+      #features .point-card h3 {
+        color: var(--primary-color) !important;
+      }
+      #problem .point-card p,
+      #features .point-card p,
+      #problem .point-card ul li,
+      #features .point-card ul li {
+        color: var(--text-color) !important;
+      }
+
+      #solution,
+      #business {
+        background-color: var(--light-color);
+        color: var(--text-color);
+      }
+
+      .solution-card {
+        background-color: var(--alt-bg-color);
+        color: var(--white-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+      }
+
+      .solution-card h3 {
+        color: var(--primary-color) !important;
+      }
+
+      .solution-card p {
+        color: var(--white-color) !important;
+      }
+
+      .business-model-section .model-points {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .model-card {
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+        max-width: 700px;
+        margin-bottom: 30px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .model-card h3 {
+        color: var(--dark-color) !important;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .model-card h3::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background-color: var(--secondary-color);
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 1.5px;
+      }
+
+      .model-card p,
+      .model-card ul li,
+      .model-card ul {
+        color: var(--text-color) !important;
+      }
+
+      .model-card ul {
+        list-style: disc;
+        padding-left: 20px;
+        margin-top: 15px;
+        display: inline-block;
+        text-align: left;
+      }
+
+      #business .section-description h3 {
+        color: var(--dark-color) !important;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+        text-align: center;
+      }
+
+      #business .section-description h3::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background-color: var(--secondary-color);
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 1.5px;
+      }
+
+      #business .section-description p {
+        text-align: center;
+        max-width: 700px;
+        margin: 15px auto 0 auto;
+      }
+
+      .tech-card {
+        background-color: var(--white-color);
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        width: calc(25% - 30px);
+        min-width: 180px;
+        text-align: center;
+      }
+
+      .tech-card h3 {
+        font-size: 1.3rem;
+        color: var(--dark-color);
+        margin-bottom: 10px;
+      }
+      .tech-card p {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .download-section {
+        background-color: var(--dark-color);
+        color: var(--white-color);
+        padding: 80px 0;
+      }
+
+      .download-section h2 {
+        color: var(--white-color);
+      }
+
+      .download-section p {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+      }
+
+      footer {
+        background-color: #222;
+        color: #ccc;
+        padding: 40px 0;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      footer .links a {
+        color: var(--white-color);
+        margin: 0 15px;
+        font-size: 1rem;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      @media (max-width: 900px) {
+        nav ul {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        .hero p {
+          font-size: 1rem;
+        }
+        .point-card,
+        .model-card {
+          width: calc(90% - 20px);
+          min-width: unset;
+        }
+        .tech-card {
+          width: calc(45% - 20px);
+        }
+        header {
+          padding: 1rem 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-content">
+        <div class="logo">
+          <span class="logo-icon">☁️</span>
+          <span>CUDI SafePay</span>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#what-is-it">What is it?</a></li>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#business">Business</a></li>
+            <li><a href="#tech">Technology</a></li>
+            <li><a href="#download">Download</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Turning blockchain complexity into conversational simplicity</h1>
+          <p>
+            CUDI SafePay: Frictionless and Censorship-Resistant Micropayments
+            powered by AI.
+          </p>
+          <a href="#download" class="btn">Download App</a>
+          <p class="tagline">
+            "The complexity of blockchain disappears and becomes the simplicity
+            of the Cloud. That's the promise of Bulut."
+          </p>
+        </div>
+      </section>
+
+      <section id="what-is-it">
+        <div class="container">
+          <h2>What is CUDI SafePay?</h2>
+          <p class="section-description">
+            CUDI SafePay is a decentralized and private micropayment system
+            designed to empower creators, journalists, and NGOs, allowing them
+            to receive direct support from their audiences
+            <strong>without intermediaries or censorship</strong>. Our goal is
+            to make digital finance globally accessible and eliminate the
+            barriers of traditional platforms that impose high fees and
+            compromise privacy. At the heart of CUDI is <strong>Bulut</strong>,
+            an Artificial Intelligence (AI) agent that transforms blockchain
+            complexity into a simple conversational experience.
+          </p>
+        </div>
+      </section>
+
+      <section id="problem">
+        <div class="container">
+          <h2>The Problems Today</h2>
+          <div class="problem-points">
+            <div class="point-card">
+              <h3>For Creators and Journalists</h3>
+              <ul>
+                <li>
+                  <strong>Inaccessibility:</strong> Platforms are often
+                  unavailable in countries with capital controls.
+                </li>
+                <li>
+                  <strong>Lack of Privacy:</strong> Exposure of personal data
+                  puts activists and journalists at risk.
+                </li>
+                <li>
+                  <strong>Censorship and High Fees:</strong> Intermediaries
+                  freeze funds and charge 2.9% - 3.4%.
+                </li>
+              </ul>
+            </div>
+            <div class="point-card">
+              <h3>For the Average Web3 User</h3>
+              <ul>
+                <li>
+                  <strong>Incomprehensible UX:</strong> Terms like "Gas Fee,"
+                  "Seed Phrase."
+                </li>
+                <li>
+                  <strong>Fear of Loss:</strong> Afraid of losing funds due to
+                  complex private keys and wallet management.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="solution">
+        <div class="container">
+          <h2>Our Solution: The Conversation is the Transaction</h2>
+          <p class="section-description">
+            CUDI SafePay eliminates complexity. Our Bulut agent (AI) translates
+            human language into blockchain instructions, making technical
+            interactions invisible.
+          </p>
+          <div class="solution-points">
+            <div class="point-card solution-card">
+              <h3>Bulut AI Agent</h3>
+              <p>
+                Using Google Gemini, Bulut interprets natural language commands
+                ("Pay 15 USDC to @FreeJournalist") and converts them into
+                structured JSON for execution on the blockchain.
+              </p>
+            </div>
+            <div class="point-card solution-card">
+              <h3>Frictionless Payments</h3>
+              <p>
+                Executed on Arc Blockchain with USDC as native gas. The Circle
+                Paymaster eliminates or minimizes gas fees for the end-user.
+              </p>
+            </div>
+            <div class="point-card solution-card">
+              <h3>Account Abstraction</h3>
+              <p>
+                Non-custodial wallets managed by Circle Developer-Controlled
+                Wallets SDK. Simple access with PIN/Biometrics, eliminating the
+                seed phrase risk.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <h2>CUDI SafePay Key Features</h2>
+          <div class="features-list">
+            <div class="point-card">
+              <h3>Conversational P2P Payments</h3>
+              <p>
+                Send USDC micropayments to other users with a simple command
+                like "Pay 5 USDC to @user."
+              </p>
+            </div>
+            <div class="point-card">
+              <h3>Subscriptions and Recurring Payments</h3>
+              <p>
+                Set up automatic recurring payments to a creator or
+                organization: "Sign me up for this course, pay 10 USDC each
+                month."
+              </p>
+            </div>
+            <div class="point-card">
+              <h3>Donations and Tipping</h3>
+              <p>
+                Send tips or one-time donations to a cause without needing to
+                register on a centralized platform.
+              </p>
+            </div>
+            <div class="point-card">
+              <h3>Natural Language Portfolio Management</h3>
+              <p>
+                Bulut can answer questions about your balance, transaction
+                history, or payment status: "Show me my USDC balance?"
+              </p>
+            </div>
+            <div class="point-card">
+              <h3>Gasless Transactions</h3>
+              <p>
+                Make payments without worrying about gas fees, thanks to our
+                Paymaster implementation.
+              </p>
+            </div>
+            <div class="point-card">
+              <h3>Self-Custody and Privacy</h3>
+              <p>
+                Pseudonymous transactions on Arc Blockchain and full control of
+                your funds (we never hold your money).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="business" class="business-model-section">
+        <div class="container">
+          <h2>Business Model: Zero Fees, Sustainable Income</h2>
+          <p class="section-description">
+            Our innovative strategy aims to eliminate fees for the end-user,
+            upholding CUDI SafePay's promise of a frictionless experience.
+          </p>
+          <div class="model-points">
+            <div class="model-card">
+              <h3>Transparent Fee Structure</h3>
+              <ul>
+                <li>
+                  <strong>0% for Users:</strong> If the optional "Zero-Fee
+                  Savings" (yield on idle balance) feature is active, Gas and AI
+                  costs are automatically covered.
+                </li>
+                <li>
+                  <strong>Ultra-Low Commission:</strong> If the savings feature
+                  is disabled, a small staggered commission (0.3% - 0.5%) is
+                  applied to cover costs, still far lower than alternatives
+                  (2.9% - 3.4%).
+                </li>
+              </ul>
+            </div>
+            <div class="model-card">
+              <h3>Additional Revenue Streams</h3>
+              <ul>
+                <li>
+                  <strong>Creator Commission (1.0%):</strong> A low fee on
+                  received funds, justified by censorship resistance and
+                  automated management.
+                </li>
+                <li>
+                  <strong>B2B API Licensing (Bulut):</strong> Selling AI agent
+                  licenses to platforms (e-learning, gaming, DeFi) via a monthly
+                  fee and per-API call cost.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-description" style="margin-top: 50px">
+            <h3>Impact and Business Value</h3>
+            <p>
+              CUDI SafePay promotes <strong>Financial Inclusion</strong> by
+              offering global P2P payments without barriers (a "Bizum 3.0").
+              Furthermore, it
+              <strong>Empowers Creators and Activists</strong> with a
+              censorship-resistant financing tool, crucial where freedom of
+              expression is vital.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="tech"
+        style="
+          background-color: var(--hero-bg-color);
+          color: var(--white-color);
+        "
+      >
+        <div class="container">
+          <h2 style="color: var(--white-color)">Our Technology Stack</h2>
+          <p class="section-description" style="color: var(--white-color)">
+            Built on a robust technology stack to ensure security, efficiency,
+            and an unprecedented user experience.
+          </p>
+          <div class="tech-stack">
+            <div class="tech-card">
+              <h3>Blockchain</h3>
+              <p>Arc Blockchain (EVM-compatible, USDC-native)</p>
+            </div>
+            <div class="tech-card">
+              <h3>AI Agent</h3>
+              <p>AI/ML API</p>
+            </div>
+            <div class="tech-card">
+              <h3>Payment Infra.</h3>
+              <p>Circle Developer-Controlled Wallets SDK & Paymaster</p>
+            </div>
+            <div class="tech-card">
+              <h3>Backend</h3>
+              <p>Python (FastAPI)</p>
+            </div>
+            <div class="tech-card">
+              <h3>Frontend/App</h3>
+              <p>Flutter (Dart)</p>
+            </div>
+            <div class="tech-card">
+              <h3>Contracts</h3>
+              <p>Solidity</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" class="download-section">
+        <div class="container">
+          <h2>Download CUDI SafePay Now</h2>
+          <p>
+            Experience the future of intelligent payments: zero fees, no
+            censorship, and the simplicity of a conversation.
+          </p>
+
+          <a
+            href="https://github.com/cudi-org/safepay-download/raw/refs/heads/main/SafePay.apk"
+            class="btn"
+            download="CUDISafePay.apk"
+            >Download the test version</a
+          >
+
+          <p style="margin-top: 30px; font-size: 0.9rem">
+            (Coming soon full version)
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="links">
+          <a
+            href="https://cudi-org.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="CUDI SafePay Website"
+          >
+            <span style="font-size: 1.5rem">🔗</span>
+          </a>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=breolanapp@gmail.com&su=SafePay"
+            target="_blank"
+            aria-label="Send Email to CUDI SafePay"
+          >
+            <span style="font-size: 1.5rem">✉️</span>
+          </a>
+        </div>
+        <p style="margin-top: 10px">
+          &copy; 2025 CUDI SafePay. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
